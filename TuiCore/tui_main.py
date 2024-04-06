@@ -1,4 +1,7 @@
-from AutoPackCore import get_main_class, make_jar, compile_java, unzip
+import shutil
+
+from AutoPackCore import get_main_class, make_jar, compile_java, unzip, list_java, copy_jar
+from AutoPackCore import MainClassDuplicatedException, MainClassNotFoundException, CompileErrorException
 from .colorize import *
 
 from pathlib import Path
@@ -40,10 +43,13 @@ def TuiMain(names: [str, str]):
             zip_file = __retry(lambda: __get_zip(nick), lambda x: x.strip() == "" or Path(x).is_file())
         except EOFError:
             break
+
         person_root_path = root_path / ident
         if person_root_path.exists():
-            print(f'{Yellow("清空目标文件夹：")}{Pink(str(person_root_path))}')
-        person_root_path.mkdir(exist_ok=True)
+            print(f'{Yellow("  清空目标文件夹：")}{Pink(str(person_root_path))}')
+            shutil.rmtree(str(person_root_path))
+        person_root_path.mkdir(exist_ok=False)
+
         if zip_file.strip() == "":
             print(Pink("Skipped!"))
             continue
@@ -52,3 +58,28 @@ def TuiMain(names: [str, str]):
             unzip(zip_file, person_root_path / 'src')
         except Exception as e:
             print(Red(repr(e)), Pink("Skip!"))
+            continue
+
+        try:
+            main_class = get_main_class(list_java(person_root_path / 'src'))
+            print(f'{Yellow("  主类：")}{Pink(main_class)}')
+        except MainClassNotFoundException as e:
+            print(Red(str(e)))
+            main_class = input(Cyan("  主类："))
+        except MainClassDuplicatedException as e:
+            print(Red(str(e)))
+            main_class = input(Cyan("  主类："))
+
+        try:
+            compile_java(person_root_path)
+            make_jar(person_root_path, ident, main_class)
+        except CompileErrorException as e:
+            print(Red(str(e)), Pink("Skip!"))
+            continue
+
+        try:
+            copy_jar(person_root_path, ident)
+            print(f'{Yellow("  已生成：")}{Pink(str(root_path / ident) + ".jar")}')
+        except Exception as e:
+            print(Red(repr(e)), Pink("Skip!"))
+            continue
