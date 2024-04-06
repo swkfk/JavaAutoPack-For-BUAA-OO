@@ -19,7 +19,7 @@ def make_jar(root_path: Path, ident: str, main_class: str):
             '-C', str(root_path / 'build'), '.'
         ], stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as e:
-        raise PackErrorException(e.returncode, e.stdout)
+        raise CompileErrorException(e.returncode, e.stdout)
 
 
 if __name__ == '__main__':

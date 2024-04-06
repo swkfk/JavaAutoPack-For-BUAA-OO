@@ -4,13 +4,12 @@ import subprocess
 from pathlib import Path
 
 
-
-def __list_java(src_path: Path) -> [str]:
+def list_java(src_path: Path) -> [str]:
     return [str(item) for item in src_path.rglob('*.java')]
 
 
 def __gen_list(root_path: Path):
-    (root_path / "sources.list").write_text("\n".join(__list_java(root_path / "src")))
+    (root_path / "sources.list").write_text("\n".join(list_java(root_path / "src")))
 
 
 def compile_java(root_path: Path):
