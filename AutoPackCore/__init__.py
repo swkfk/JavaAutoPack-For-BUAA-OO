@@ -3,3 +3,4 @@ from .jar_maker import make_jar
 from .mainclass_detect import get_main_class
 from .exception import *
 from .unzip import unzip
+from .copy_jar import copy_jar
