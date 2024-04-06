@@ -8,7 +8,7 @@ def __check__entry(java_file: str) -> bool:
     def line_checker(line: str):
         return line.find("public static void main") != -1
 
-    with open(java_file, 'r') as f:
+    with open(java_file, 'r', errors='replace') as f:
         return any(map(line_checker, f.readlines()))
 
 
