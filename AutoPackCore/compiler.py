@@ -1,17 +1,8 @@
+from .exception import CompileErrorException
+
 import subprocess
 from pathlib import Path
 
-
-class CompileErrorException(Exception):
-    def __init__(self, return_code: int, stderr: str | bytes):
-        if type(stderr) == str:
-            self.stderr = stderr
-        else:
-            self.stderr = stderr.decode('utf-8', errors='replace')
-        self.return_code = return_code
-
-    def __str__(self):
-        return f"编译错误，编译器返回值：{self.return_code}\n{self.stderr}"
 
 
 def __list_java(src_path: Path) -> [str]:

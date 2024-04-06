@@ -1,15 +1,7 @@
+from .exception import MainClassDuplicatedException, MainClassNotFoundException
+
 import itertools
 import pathlib
-
-
-class MainClassNotFoundException(Exception):
-    def __str__(self):
-        return "检测不到任何一个主类！"
-
-
-class MainClassDuplicatedException(Exception):
-    def __str__(self):
-        return "检测到多个潜在的主类！"
 
 
 def __check__entry(java_file: str) -> bool:
