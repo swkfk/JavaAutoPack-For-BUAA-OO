@@ -71,6 +71,7 @@ def TuiMain(names: [str, str]):
             main_class = input(Cyan("  主类："))
 
         try:
+            (person_root_path / 'build').mkdir(exist_ok=False)
             compile_java(person_root_path)
             make_jar(person_root_path, ident, main_class)
         except CompileErrorException as e:
