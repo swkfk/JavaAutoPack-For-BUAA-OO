@@ -18,6 +18,8 @@ def compile_java(root_path: Path):
         subprocess.check_output([
             'javac',
             '-d', str(root_path / 'build'),
+            '-encoding', 'UTF-8',
+            '-g',
             '-sourcepath', str(root_path / 'src'),
             f"@{root_path / 'sources.list'}"
         ], stderr=subprocess.STDOUT)
