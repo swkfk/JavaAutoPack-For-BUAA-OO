@@ -24,7 +24,7 @@ def __find_entry(java_list: [str]) -> str:
 def __parse_package(java_file: str) -> str:
     class_name = pathlib.Path(java_file).stem
 
-    with open(java_file, "r") as f:
+    with open(java_file, "r", errors='replace') as f:
         iterator = itertools.dropwhile(lambda s: not s.strip().startswith('package '), f.readlines())
     try:
         line = next(iterator)
