@@ -4,3 +4,4 @@ from .mainclass_detect import get_main_class
 from .exception import *
 from .unzip import unzip
 from .copy_jar import copy_jar
+from .extract_jar import extract_jar

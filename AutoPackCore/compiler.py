@@ -12,7 +12,8 @@ def __gen_list(root_path: Path):
     (root_path / "sources.list").write_text("\n".join(list_java(root_path / "src")))
 
 
-def compile_java(root_path: Path):
+def compile_java(root_path: Path, deps: str):
+    deps_list = '.' if deps == "" else f'.;{deps}'
     __gen_list(root_path)
     try:
         subprocess.check_output([
@@ -20,6 +21,7 @@ def compile_java(root_path: Path):
             '-d', str(root_path / 'build'),
             '-encoding', 'UTF-8',
             '-g',
+            '-classpath', deps_list,
             '-sourcepath', str(root_path / 'src'),
             f"@{root_path / 'sources.list'}"
         ], stderr=subprocess.STDOUT)
@@ -28,8 +30,8 @@ def compile_java(root_path: Path):
 
 
 if __name__ == '__main__':
-    compile_java(Path('tests/WithPackage'))
+    compile_java(Path('tests/WithPackage'), "")
     try:
-        compile_java(Path('tests/CompileError'))
+        compile_java(Path('tests/CompileError'), "")
     except CompileErrorException as e:
         print(e)

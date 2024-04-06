@@ -1,6 +1,6 @@
 import shutil
 
-from AutoPackCore import get_main_class, make_jar, compile_java, unzip, list_java, copy_jar
+from AutoPackCore import get_main_class, make_jar, compile_java, unzip, list_java, copy_jar, extract_jar
 from AutoPackCore import MainClassDuplicatedException, MainClassNotFoundException, CompileErrorException
 from .colorize import *
 
@@ -30,6 +30,10 @@ def __get_zip(nick: str):
     print()
     return input(f'{Cyan(nick)}: ')
 
+def __get_deps():
+    print()
+    return input(f'{Cyan("依赖的 Jar 包")}: ')
+
 def TuiMain(names: [str, str]):
     root_path = Path('Generated')
     root_path.mkdir(exist_ok=True)
@@ -37,6 +41,8 @@ def TuiMain(names: [str, str]):
     __starter()
 
     __input_hint()
+
+    deps_file = __retry(__get_deps, lambda x: x.strip() == "" or Path(x).is_file()).strip()
 
     for ident, nick in names:
         try:
@@ -66,14 +72,16 @@ def TuiMain(names: [str, str]):
             print(f'{Yellow("  主类：")}{Pink(main_class)}')
         except MainClassNotFoundException as e:
             print(Red(str(e)))
-            main_class = input(Cyan("  主类："))
+            main_class = input(Cyan("  主类：") + ": ")
         except MainClassDuplicatedException as e:
             print(Red(str(e)))
-            main_class = input(Cyan("  主类："))
+            main_class = input(Cyan("  主类") + ": ")
 
         try:
             (person_root_path / 'build').mkdir(exist_ok=False)
-            compile_java(person_root_path)
+            compile_java(person_root_path, deps_file)
+            if deps_file != "":
+                extract_jar(deps_file, (person_root_path / 'build'))
             make_jar(person_root_path, ident, main_class)
         except CompileErrorException as e:
             print(Red(str(e)), Pink("Skip!"))
