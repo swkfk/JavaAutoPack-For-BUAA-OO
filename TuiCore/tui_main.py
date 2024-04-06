@@ -44,15 +44,16 @@ def TuiMain(names: [str, str]):
         except EOFError:
             break
 
+        if zip_file.strip() == "":
+            print(Pink("Skipped!"))
+            continue
+
         person_root_path = root_path / ident
         if person_root_path.exists():
             print(f'{Yellow("  清空目标文件夹：")}{Pink(str(person_root_path))}')
             shutil.rmtree(str(person_root_path))
         person_root_path.mkdir(exist_ok=False)
 
-        if zip_file.strip() == "":
-            print(Pink("Skipped!"))
-            continue
         (person_root_path / 'src').mkdir(exist_ok=False)
         try:
             unzip(zip_file, person_root_path / 'src')
