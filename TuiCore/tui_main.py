@@ -2,9 +2,15 @@ import shutil
 
 from AutoPackCore import get_main_class, make_jar, compile_java, unzip, list_java, copy_jar, extract_jar
 from AutoPackCore import MainClassDuplicatedException, MainClassNotFoundException, CompileErrorException
+from AutoPackCore import set_jar, set_javac
 from .colorize import *
 
 from pathlib import Path
+
+# For manually modify the executable path
+set_jar('jar')
+set_javac('javac')
+# End of manually modify
 
 def __retry(fn, check):
     ret = fn()
@@ -18,7 +24,8 @@ def __starter():
     print()
     print(f'{Blue("安装库 ")}{Pink("PyQt6")}{Blue(" 以获取图形化界面支持！")}')
     print()
-    print(f'{Yellow("请确保 ")}{Pink("javac")}{Yellow(" 与 ")}{Pink("jar")}{Yellow(" 命令可用，TUI 版本不支持定制")}')
+    print(f'{Yellow("请确保 ")}{Pink("javac")}{Yellow(" 与 ")}{Pink("jar")}{Yellow(" 命令可用，TUI 版本可于")}'
+          f'{Pink(" AutoPackCore/tui_main.py:11-12")}{Yellow(" 中修改")}')
     print(f'{Yellow("打包完成后，相关文件将会存放在 ")}{Pink("Generated")}{Yellow(" 文件夹中")}')
     print()
 

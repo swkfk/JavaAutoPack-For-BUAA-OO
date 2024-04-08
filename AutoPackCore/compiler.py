@@ -1,4 +1,5 @@
 from .exception import CompileErrorException
+from .executable_path import get_javac
 
 import subprocess
 from pathlib import Path
@@ -17,7 +18,7 @@ def compile_java(root_path: Path, deps: str):
     __gen_list(root_path)
     try:
         subprocess.check_output([
-            'javac',
+            get_javac(),
             '-d', str(root_path / 'build'),
             '-encoding', 'UTF-8',
             '-g',
