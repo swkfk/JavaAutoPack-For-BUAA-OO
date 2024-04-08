@@ -16,7 +16,9 @@ def __retry(fn, check):
 def __starter():
     print(f'{Cyan("JavaAutoPack Made by ")}{Blue("kai_Ker")}')
     print()
-    print(f'{Yellow("请确保 ")}{Pink("javac")}{Yellow(" 与 ")}{Pink("jar")}{Yellow(" 命令可用，当前版本不支持定制")}')
+    print(f'{Blue("安装库 ")}{Pink("PyQt6")}{Blue(" 以获取图形化界面支持！")}')
+    print()
+    print(f'{Yellow("请确保 ")}{Pink("javac")}{Yellow(" 与 ")}{Pink("jar")}{Yellow(" 命令可用，TUI 版本不支持定制")}')
     print(f'{Yellow("打包完成后，相关文件将会存放在 ")}{Pink("Generated")}{Yellow(" 文件夹中")}')
     print()
 

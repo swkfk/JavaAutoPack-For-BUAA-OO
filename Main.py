@@ -1,4 +1,7 @@
-from TuiCore import TuiMain
+try:
+    from GuiCore import GuiMain as Main
+except ModuleNotFoundError:
+    from TuiCore import TuiMain as Main
 
 names = [
     ('TianShu', "天枢星"),
@@ -12,4 +15,4 @@ names = [
 ]
 
 if __name__ == '__main__':
-    TuiMain(names)
+    Main(names)
