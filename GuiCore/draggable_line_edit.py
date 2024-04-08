@@ -1,3 +1,5 @@
+import os
+
 from PyQt6.QtGui import QDragEnterEvent, QDragMoveEvent, QDropEvent
 from PyQt6.QtWidgets import QLineEdit
 
@@ -20,7 +22,7 @@ class DraggableLineEdit(QLineEdit):
         if mime_data.hasUrls():
             urls = mime_data.urls()
             file_name = urls[0].toLocalFile()
-            self.setText(file_name)
+            self.setText(file_name.replace('/', os.path.sep).replace('\\', os.path.sep))
             a0.accept()
         else:
             a0.ignore()
