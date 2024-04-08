@@ -4,6 +4,7 @@ from PyQt6.QtCore import QSize, QRect, Qt
 from PyQt6.QtWidgets import QMainWindow, QLabel
 
 from .draggable_line_edit import DraggableLineEdit
+from .settings import get_default_jar, get_default_javac, set_default_jar, set_default_javac
 from .unit_item import UnitItem
 
 from AutoPackCore import set_jar, set_javac
@@ -22,6 +23,7 @@ class MainWindow(QMainWindow):
         self.m_label_javac.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.m_line_javac = DraggableLineEdit(self)
+        self.m_line_javac.setText(get_default_javac())
         self.m_line_javac.setGeometry(QRect(110, 75, 160, 30))
         self.m_line_javac.setPlaceholderText("可为 'javac'，可拖拽")
 
@@ -30,6 +32,7 @@ class MainWindow(QMainWindow):
         self.m_label_jar.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.m_line_jar = DraggableLineEdit(self)
+        self.m_line_jar.setText(get_default_jar())
         self.m_line_jar.setGeometry(QRect(320, 75, 160, 30))
         self.m_line_jar.setPlaceholderText("可为 'jar'，可拖拽")
 
@@ -67,4 +70,6 @@ class MainWindow(QMainWindow):
 
     def connect(self):
         self.m_line_javac.textChanged.connect(set_javac)
+        self.m_line_javac.textChanged.connect(set_default_javac)
         self.m_line_jar.textChanged.connect(set_jar)
+        self.m_line_jar.textChanged.connect(set_default_jar)
