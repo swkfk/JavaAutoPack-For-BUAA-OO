@@ -16,5 +16,5 @@ def GuiMain(names: [str, str]):
     sys.excepthook = exception_hook
 
     app = QApplication(sys.argv)
-    widget = MainWindow()
+    widget = MainWindow(names)
     sys.exit(app.exec())
