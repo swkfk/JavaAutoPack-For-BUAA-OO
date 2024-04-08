@@ -14,7 +14,7 @@ def make_jar(root_path: Path, ident: str, main_class: str):
     __write_manifest(root_path, main_class)
     try:
         subprocess.check_output([
-            get_jar, 'cvfm',
+            get_jar(), 'cvfm',
             str(root_path / f'{ident}.jar'),
             str(root_path / 'build' / 'META-INF' / 'MANIFEST.MF'),
             '-C', str(root_path / 'build'), '.'
