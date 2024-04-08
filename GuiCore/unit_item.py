@@ -86,11 +86,11 @@ class UnitItem(QWidget):
         try:
             unzip(str(zip_path), self.root_path / 'src')
             main_class = get_main_class(list_java(self.root_path / 'src'))
+            self.m_line_mc.setText(main_class)
             self.on_gen()
         except (MainClassDuplicatedException, MainClassNotFoundException):
-            main_class = ""
+            self.m_line_mc.setText("")
         self.m_line_mc.disconnect()
-        self.m_line_mc.setText(main_class)
         self.m_line_mc.textChanged.connect(self.on_mc_change)
 
     def on_mc_change(self):
