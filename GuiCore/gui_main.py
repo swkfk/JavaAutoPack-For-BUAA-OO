@@ -1,5 +1,7 @@
+import shutil
 import sys
 import traceback as tb
+from pathlib import Path
 from tkinter import messagebox
 
 from PyQt6.QtWidgets import QApplication
@@ -14,6 +16,16 @@ def exception_hook(exctype, value, traceback):
 
 def GuiMain(names: [str, str]):
     sys.excepthook = exception_hook
+
+    root_path = Path('Generated')
+    root_path.mkdir(exist_ok=True)
+
+    for ident, _ in names:
+        person_root_path = root_path / ident
+        if person_root_path.exists():
+            shutil.rmtree(str(person_root_path))
+        person_root_path.mkdir(exist_ok=False)
+        (person_root_path / 'src').mkdir(exist_ok=False)
 
     app = QApplication(sys.argv)
     widget = MainWindow(names)
