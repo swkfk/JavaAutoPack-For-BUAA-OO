@@ -1,10 +1,15 @@
 import os
+from pathlib import Path
 
 from PyQt6.QtCore import QSize, QRect, Qt
 from PyQt6.QtWidgets import QMainWindow, QLabel
 
 from .draggable_line_edit import DraggableLineEdit
-from .settings import get_default_jar, get_default_javac, set_default_jar, set_default_javac
+from .settings import (
+    get_default_jar, set_default_jar,
+    get_default_javac, set_default_javac,
+    get_default_path, set_default_path
+)
 from .unit_item import UnitItem
 
 from AutoPackCore import set_jar, set_javac
@@ -49,12 +54,11 @@ class MainWindow(QMainWindow):
         self.m_label_cwd.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.m_line_cwd = DraggableLineEdit(self)
-        self.m_line_cwd.setText(os.getcwd())
+        self.m_line_cwd.setText(get_default_path())
         self.m_line_cwd.setGeometry(QRect(65, 5, 415, 30))
         self.m_line_cwd.setPlaceholderText("拖拽或者填写路径！")
-        self.m_line_cwd.setReadOnly(True)
 
-        self.m_label_gen = QLabel(os.path.sep + "Generated" + os.path.sep, self)
+        self.m_label_gen = QLabel(self)
         self.m_label_gen.setGeometry(QRect(485, 5, 95, 30))
         self.m_label_gen.setAlignment(Qt.AlignmentFlag.AlignVCenter)
 
@@ -73,3 +77,14 @@ class MainWindow(QMainWindow):
         self.m_line_javac.textChanged.connect(set_default_javac)
         self.m_line_jar.textChanged.connect(set_jar)
         self.m_line_jar.textChanged.connect(set_default_jar)
+        self.m_line_cwd.textChanged.connect(self.on_cwd_change)
+
+    def on_cwd_change(self, text: str):
+        self.m_line_cwd.setText(text.strip(' "\n\t\r'))
+        if not Path(text).is_dir():
+            self.m_label_gen.setText("目录不合法！")
+            return
+        for unit in self.units:
+            unit.root_path = Path(self.m_line_cwd.text()) / unit.ident
+        self.m_label_gen.setText("")
+        set_default_path(self.m_line_cwd.text())

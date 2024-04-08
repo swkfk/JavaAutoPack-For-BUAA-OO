@@ -5,6 +5,7 @@ from PyQt6.QtCore import QRect, Qt
 from PyQt6.QtWidgets import QWidget, QLabel, QFrame, QLineEdit, QPushButton, QMessageBox
 
 from .draggable_line_edit import DraggableLineEdit
+from .settings import get_default_path
 from AutoPackCore import (
     get_main_class, list_java, unzip, make_jar, copy_jar, extract_jar,
     MainClassDuplicatedException, MainClassNotFoundException, compile_java, CompileErrorException
@@ -15,7 +16,7 @@ class UnitItem(QWidget):
     def __init__(self, parent, ident: str, nick: str, deps_line: DraggableLineEdit):
         super().__init__(parent)
         self.parent = parent
-        self.root_path = Path('Generated') / ident
+        self.root_path = Path(get_default_path()) / ident
         self.ident = ident
         self.nick = nick
         self.p_line_deps = deps_line
