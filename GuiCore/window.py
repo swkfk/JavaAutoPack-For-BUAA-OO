@@ -15,7 +15,7 @@ class MainWindow(QMainWindow):
         self.units = []
         for i, (ident, nick) in enumerate(self.names):
             unit = UnitItem(self, ident, nick)
-            unit.setGeometry(QRect(0, 127 + 75 * i, 600, 75))
+            unit.setGeometry(QRect(0, 120 + 75 * i, 600, 75))
             self.units.append(unit)
 
         self.show()
