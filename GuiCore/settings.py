@@ -27,3 +27,11 @@ def get_default_path():
 def set_default_path(value: str):
     settings.setValue("gen-path", value)
     settings.sync()
+
+def get_default_ignore_test():
+    value = settings.value("ignore-test", False)
+    return value
+
+def set_ignore_test(value: bool):
+    settings.setValue("ignore-test", value)
+    settings.sync()

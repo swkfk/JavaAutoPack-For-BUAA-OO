@@ -2,13 +2,13 @@ import os
 from pathlib import Path
 
 from PyQt6.QtCore import QSize, QRect, Qt
-from PyQt6.QtWidgets import QMainWindow, QLabel
+from PyQt6.QtWidgets import QMainWindow, QLabel, QCheckBox
 
 from .draggable_line_edit import DraggableLineEdit
 from .settings import (
     get_default_jar, set_default_jar,
     get_default_javac, set_default_javac,
-    get_default_path, set_default_path
+    get_default_path, set_default_path, get_default_ignore_test, set_ignore_test
 )
 from .unit_item import UnitItem
 
@@ -26,6 +26,10 @@ class MainWindow(QMainWindow):
         self.m_label_javac = QLabel("Javac", self)
         self.m_label_javac.setGeometry(QRect(50, 75, 60, 30))
         self.m_label_javac.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.m_check_ignore_test = QCheckBox("忽略 test/", self)
+        self.m_check_ignore_test.setGeometry(QRect(485, 40, 95, 30))
+        self.m_check_ignore_test.setChecked(get_default_ignore_test())
 
         self.m_line_javac = DraggableLineEdit(self)
         self.m_line_javac.setText(get_default_javac())
@@ -78,6 +82,7 @@ class MainWindow(QMainWindow):
         self.m_line_jar.textChanged.connect(set_jar)
         self.m_line_jar.textChanged.connect(set_default_jar)
         self.m_line_cwd.textChanged.connect(self.on_cwd_change)
+        self.m_check_ignore_test.stateChanged.connect(set_ignore_test)
 
     def on_cwd_change(self, text: str):
         self.m_line_cwd.setText(text.strip(' "\n\t\r'))
